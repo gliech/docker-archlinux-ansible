@@ -1,40 +1,34 @@
-# Fedora 32 Ansible Test Image
+# Archlinux Ansible Test Image
 
-[![Build Status](https://travis-ci.com/geerlingguy/docker-fedora32-ansible.svg?branch=master)](https://travis-ci.com/geerlingguy/docker-fedora32-ansible) [![Docker Automated build](https://img.shields.io/docker/automated/geerlingguy/docker-fedora32-ansible.svg?maxAge=2592000)](https://hub.docker.com/r/geerlingguy/docker-fedora32-ansible/)
-
-Fedora 32 Docker container for Ansible playbook and role testing.
-
-## Tags
-
-  - `latest`: Latest stable version of Ansible.
-
-The latest tag is a lightweight image for basic validation of Ansible playbooks.
-
-## How to Build
-
-This image is built on Docker Hub automatically any time the upstream OS container is rebuilt, and any time a commit is made or merged to the `master` branch. But if you need to build the image on your own locally, do the following:
-
-  1. [Install Docker](https://docs.docker.com/engine/installation/).
-  2. `cd` into this directory.
-  3. Run `docker build -t fedora32-ansible .`
-
-> Note: Switch between `master` and `testing` depending on whether you want the extra testing tools present in the resulting image.
+Archlinux Docker container for Ansible playbook and role testing. Adapted from
+[Jeff Geerlings][1] fabulous [container images for ansible testing][2].
 
 ## How to Use
 
-  1. [Install Docker](https://docs.docker.com/engine/installation/).
-  2. Pull this image from Docker Hub: `docker pull geerlingguy/docker-fedora32-ansible:latest` (or use the image you built earlier, e.g. `fedora32-ansible:latest`).
-  3. Run a container from the image: `docker run --detach --privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro geerlingguy/docker-fedora32-ansible:latest` (to test my Ansible roles, I add in a volume mounted from the current working directory with ``--volume=`pwd`:/etc/ansible/roles/role_under_test:ro``).
-  4. Use Ansible inside the container:
-    a. `docker exec --tty [container_id] env TERM=xterm ansible --version`
-    b. `docker exec --tty [container_id] env TERM=xterm ansible-playbook /path/to/ansible/playbook.yml --syntax-check`
+  1. [Install Docker]().
+  2. `cd` into this directory.
+  3. Run `docker build -t archlinux-ansible .`
+  4. Run a container from the image: `docker run --detach --privileged
+     --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro
+     archlinux-ansible:latest` (to test Ansible roles, you can
+     add in a volume mounted from the current working directory with
+     ``--volume=`pwd`:/etc/ansible/roles/role_under_test:ro``).
+  5. Use Ansible inside the container:
+     1. `docker exec --tty [container_id] env TERM=xterm ansible --version`
+     2. `docker exec --tty [container_id] env TERM=xterm ansible-playbook
+        /path/to/ansible/playbook.yml --syntax-check`
 
-## Notes
+> **Important Note**: The image is meant to be used for testing in an isolated
+> environment **not for production**. The settings and configuration used may
+> not be suitable for a secure and performant production environment. Use on
+> production servers/in the wild at your own risk!
 
-I use Docker to test my Ansible roles and playbooks on multiple OSes using CI tools like Jenkins and Travis. This container allows me to test roles and playbooks using Ansible running locally inside the container.
+## Authors
 
-> **Important Note**: I use this image for testing in an isolated environment—not for production—and the settings and configuration used may not be suitable for a secure and performant production environment. Use on production servers/in the wild at your own risk!
+[Original images][2] by [Jeff Geerling][1], author of [Ansible for DevOps][4].
+Adapted for Archlinux by Gregor Bückendorf.
 
-## Author
-
-Created in 2020 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+[1]: https://www.jeffgeerling.com/
+[2]: https://ansible.jeffgeerling.com/#container-images-for-ansible-testing
+[3]: https://docs.docker.com/engine/installation/
+[4]: https://www.ansiblefordevops.com/
