@@ -1,6 +1,7 @@
 FROM archlinux:latest
 LABEL maintainer="Gregor Bückendorf"
 ENV container=docker
+
 ENV pip_packages="ansible"
 
 # Install requirements
