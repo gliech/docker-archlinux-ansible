@@ -4,7 +4,7 @@ ENV container=docker
 
 ENV pip_packages="ansible"
 
-# Install requirements.
+# Install requirements
 RUN pacman \
       --sync \
       --refresh \
@@ -24,10 +24,10 @@ RUN pacman \
       --clean \
  && rm -rf /var/lib/pacman/sync/*
 
-# Install Ansible via Pip.
+# Install Ansible via Pip
 RUN pip install $pip_packages
 
-# Install Ansible inventory file.
+# Install Ansible inventory file
 RUN mkdir -p /etc/ansible
 RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
 

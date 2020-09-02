@@ -1,0 +1,61 @@
+---
+on:
+  pull_request:
+    branches: master
+    paths:
+      - Dockerfile
+      - .github/workflows/test.yml
+  push:
+    branches: master
+    paths:
+      - Dockerfile
+      - .github/workflows/test.yml
+name: test
+jobs:
+  test:
+    name: build/test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build --tag docker-ansible .
+
+      - name: Run image
+        run: docker run
+          --name test-container
+          --detach
+          --privileged
+          --volume /sys/fs/cgroup:/sys/fs/cgroup:ro
+          docker-ansible
+
+      - name: Verify Ansible installation
+        run: docker exec
+          --tty
+          test-container
+          env TERM=xterm ansible --version
+
+  release:
+    name: semantic-release
+    if: contains(fromJson('["refs/heads/master","refs/heads/next"]'),
+      github.ref)
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Create new release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          semantic_version: 17.1.1
+        env:
+          GIT_AUTHOR_NAME: ${{ github.actor }}
+          GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
+          GIT_COMMITTER_NAME: ${{ github.actor }}
+          GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
