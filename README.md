@@ -1,5 +1,8 @@
 # Archlinux Ansible Test Image
 
+![Github Action Workflow Status](https://github.com/gliech/docker-archlinux-ansible/workflows/test/badge.svg)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/gliech/docker-archlinux-ansible?label=autobuild&logo=docker&logoColor=white)
+
 Archlinux Docker container for Ansible playbook and role testing. Adapted from
 [Jeff Geerlings][1] fabulous [container images for ansible testing][2].
 
