@@ -1,0 +1,33 @@
+---
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: {}
+name: test
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get latest semantic version
+        id: get-semver
+        run: |
+          SEMVER=$(git describe --tags --abbrev=0 --match='v*.*.*')
+          echo "::set-output name=main::${SEMVER}"
+
+      - name: Docker meta
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: name/app
+          tags: |
+            type=ref,event=branch
+            type=schedule,pattern={{date 'YYYYMMDD'}}
+            type=semver,pattern={{version}},value=${{steps.get-semver.outputs.main}}
+            type=semver,pattern={{major}}.{{minor}}.x,value=${{steps.get-semver.outputs.main}}
+            type=semver,pattern={{major}}.x.x,value=${{steps.get-semver.outputs.main}}
