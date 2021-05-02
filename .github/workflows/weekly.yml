@@ -21,19 +21,19 @@ jobs:
         shell: python
         run: |
           import os
-          from datetime import datetime timezone
+          from datetime import datetime, timezone
 
           now = datetime.now(timezone.utc)
           ref = os.environ['GH_REF'].split('/')
           ref_type_map = {'heads': 'branch', 'tags': 'tag'}
 
           outputs = {
-            'date': now.strftime('1%Y-%m-%d')
-            'ref': '-'.join((ref_type_map.get(ref[1], 'ref'), ref[2]))
+              'date': now.strftime('1%Y-%m-%d'),
+              'ref': '-'.join((ref_type_map.get(ref[1], 'ref'), ref[2]))
           }
 
           for name, value in outputs.items():
-            print(f'::set-output name={name}::{value}'
+              print(f'::set-output name={name}::{value}')
         env:
           GH_REF: "${{ github.ref }}"
 
