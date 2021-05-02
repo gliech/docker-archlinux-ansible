@@ -1,8 +1,6 @@
-FROM archlinux:latest
+FROM archlinux:latest as build
 LABEL maintainer="Gregor Bückendorf"
 ENV container=docker
-
-ENV pip_packages="ansible"
 
 # Install requirements
 RUN pacman \
@@ -25,11 +23,15 @@ RUN pacman \
  && rm -rf /var/lib/pacman/sync/*
 
 # Install Ansible via Pip
-RUN pip install $pip_packages
+RUN pip install ansible
 
 # Install Ansible inventory file
 RUN mkdir -p /etc/ansible
-RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
+COPY hosts /etc/ansible/
 
 VOLUME ["/sys/fs/cgroup"]
 CMD ["/usr/lib/systemd/systemd"]
+
+FROM build as test
+COPY test .
+RUN ansible-playbook site.yml

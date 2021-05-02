@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: Ansible version
+      debug:
+        msg: "{{ ansible_version.full }}"
+    - name: Python version
+      debug:
+        msg: "{{ ansible_python_version }}"

@@ -1,0 +1,54 @@
+---
+name: weekly build
+on:
+  schedule:
+    - cron: '42 4 * * 3'
+  workflow_dispatch:
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and test
+        uses: docker/build-push-action@v2
+        with:
+          target: test
+
+      - name: Gather tag info
+        id: taginfo
+        shell: python
+        run: |
+          import os
+          from datetime import datetime timezone
+
+          now = datetime.now(timezone.utc)
+          ref = os.environ['GH_REF'].split('/')
+          ref_type_map = {'heads': 'branch', 'tags': 'tag'}
+
+          outputs = {
+            'date': now.strftime('1%Y-%m-%d')
+            'ref': '-'.join((ref_type_map.get(ref[1], 'ref'), ref[2]))
+          }
+
+          for name, value in outputs.items():
+            print(f'::set-output name={name}::{value}'
+        env:
+          GH_REF: "${{ github.ref }}"
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          target: build
+          push: true
+          tags: |
+            ${{ github.repository }}:date-1${{ steps.taginfo.outputs.date }}
+            ${{ github.repository }}:run-${{ github.run_id }}-${{ github.run_number }}
+            ${{ github.repository }}:${{ steps.taginfo.outputs.ref }}
