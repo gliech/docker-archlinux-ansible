@@ -2,7 +2,7 @@
 # This workflow builds and tests a container image and then created a new
 # semantic release version if appropriate. The release versions are currently
 # not used for image tagging or anything else, but I may use it again in future.
-name: test and release new version
+name: semantic release
 on:
   pull_request:
     branches: master
