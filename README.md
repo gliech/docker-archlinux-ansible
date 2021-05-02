@@ -1,24 +1,24 @@
 # Archlinux Ansible Test Image
 
-[![Github Action Workflow Status](https://github.com/gliech/docker-archlinux-ansible/workflows/test/badge.svg)](https://github.com/gliech/docker-archlinux-ansible/actions?query=branch%3Amaster+workflow%3Atest)
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/gliech/docker-archlinux-ansible?label=autobuild&logo=docker&logoColor=white)](https://hub.docker.com/r/gliech/docker-archlinux-ansible/builds)
+[![semantic release](https://github.com/gliech/docker-archlinux-ansible/actions/workflows/release.yml/badge.svg?branch=master&event=push)][1]
+[![weekly build](https://github.com/gliech/docker-archlinux-ansible/actions/workflows/weekly.yml/badge.svg?branch=master)][2]
 
 Archlinux Docker container for Ansible playbook and role testing. Adapted from
-[Jeff Geerlings][1] fabulous [container images for ansible testing][2].
+[Jeff Geerlings][3] fabulous [container images for ansible testing][4].
 
 ## How to Build
 
-This image is built on Docker Hub automatically any time the upstream OS
-container is rebuilt, and any time a new release is created in this repository.
+The image is built once a week in [this GitHub actions workflow][2] to keep the
+repository on [Docker Hub][5] up to date with arch linux's rolling release.
 But if you need to build the image on your own locally, do the following:
 
-  1. [Install Docker][3].
+  1. [Install Docker][6].
   2. `cd` into this directory.
   3. Run `docker build -t archlinux-ansible .`
 
 ## How to Use
 
-  1. [Install Docker][3].
+  1. [Install Docker][6].
   2. Pull this image from Docker Hub: `docker pull
      gliech/docker-archlinux-ansible:latest` (or use the image you built
      earlier, e.g. `archlinux-ansible:latest`).
@@ -39,10 +39,13 @@ But if you need to build the image on your own locally, do the following:
 
 ## Authors
 
-[Original images][2] and documentation by [Jeff Geerling][1], author of
-[Ansible for DevOps][4]. Adapted for Archlinux by Gregor Bückendorf.
+[Original images][4] and documentation by [Jeff Geerling][3], author of
+[Ansible for DevOps][7]. Adapted for Archlinux by Gregor Bückendorf.
 
-[1]: https://www.jeffgeerling.com/
-[2]: https://ansible.jeffgeerling.com/#container-images-for-ansible-testing
-[3]: https://docs.docker.com/engine/installation/
-[4]: https://www.ansiblefordevops.com/
+[1]: https://github.com/gliech/docker-archlinux-ansible/actions/workflows/release.yml
+[2]: https://github.com/gliech/docker-archlinux-ansible/actions/workflows/weekly.yml
+[3]: https://www.jeffgeerling.com/
+[4]: https://ansible.jeffgeerling.com/#container-images-for-ansible-testing
+[5]: https://hub.docker.com/r/gliech/docker-archlinux-ansible
+[6]: https://docs.docker.com/engine/installation/
+[7]: https://www.ansiblefordevops.com/
