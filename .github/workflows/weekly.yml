@@ -49,6 +49,6 @@ jobs:
           target: build
           push: true
           tags: |
-            ${{ github.repository }}:date-1${{ steps.taginfo.outputs.date }}
+            ${{ github.repository }}:date-${{ steps.taginfo.outputs.date }}
             ${{ github.repository }}:run-${{ github.run_id }}-${{ github.run_number }}
             ${{ github.repository }}:${{ steps.taginfo.outputs.ref }}
